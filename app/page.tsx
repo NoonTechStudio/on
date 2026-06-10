@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Phone, Mail, CheckCircle, Menu, X, MessageSquare, ArrowRight, CreditCard, Gavel, ShoppingBag, Construction, HeartPulse, Coffee } from "lucide-react";
+import { Phone, Mail, CheckCircle, Menu, X, MessageSquare, ArrowRight, CreditCard, Gavel, ShoppingBag, Construction, HeartPulse, Coffee, MessageCircle } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-primary" });
 
@@ -374,7 +374,7 @@ export default function Home() {
 
           {/* WhatsApp Floating Button */}
           <a href="https://wa.me/442012345678" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-green-500 text-white rounded-full p-4 shadow-lg hover:scale-105 transition" title="Talk to a UK Architect">
-            <WhatsApp size={24} />
+            <MessageCircle size={24} />
           </a>
         </main>
       </body>

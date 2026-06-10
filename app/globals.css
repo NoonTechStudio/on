@@ -1,8 +1,4 @@
-/* globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-/* tailwindcss-animate utilities are loaded via Tailwind plugin */
+@import "tailwindcss";
 
 html {
   scroll-behavior: smooth;
@@ -13,26 +9,39 @@ html {
 }
 
 body {
-  @apply bg-white text-gray-900;
+  background-color: white;
+  color: #111827;
   font-family: var(--font-primary);
 }
 
-/* custom utility for Inter font */
 .font-primary {
   font-family: var(--font-primary);
 }
 
-/* Glassmorphism utility */
 .bg-glass {
-  @apply bg-white/40 backdrop-blur-md border border-slate-200/80 rounded-2xl;
+  background-color: rgb(255 255 255 / 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(226 232 240 / 0.8);
+  border-radius: 1rem;
 }
 
-/* Hover effect utility */
 .hover-scale {
-  @apply transform transition duration-200 hover:scale-105 hover:border-slate-400;
+  transition: transform 200ms, border-color 200ms;
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+  border-color: #94a3b8;
 }
 
-/* Gradient underline for H2 */
 .gradient-underline {
-  @apply relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-indigo-500 after:to-purple-500;
+  position: relative;
+}
+.gradient-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, #6366f1, #a855f7);
 }
