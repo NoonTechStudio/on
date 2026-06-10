@@ -9,8 +9,8 @@ html {
 }
 
 body {
-  background-color: white;
-  color: #111827;
+  background-color: #f8faff;
+  color: #0f172a;
   font-family: var(--font-primary);
 }
 
@@ -18,30 +18,79 @@ body {
   font-family: var(--font-primary);
 }
 
+/* Glassmorphism card */
 .bg-glass {
-  background-color: rgb(255 255 255 / 0.4);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgb(226 232 240 / 0.8);
-  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.06), 0 1px 4px rgba(0,0,0,0.04);
 }
 
-.hover-scale {
-  transition: transform 200ms, border-color 200ms;
+/* Hover lift */
+.hover-lift {
+  transition: transform 200ms ease, box-shadow 200ms ease;
 }
-.hover-scale:hover {
-  transform: scale(1.05);
-  border-color: #94a3b8;
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.14);
 }
 
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient underline for headings */
 .gradient-underline {
   position: relative;
+  display: inline-block;
 }
 .gradient-underline::after {
   content: '';
   position: absolute;
-  left: 0;
-  bottom: -4px;
-  height: 2px;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -8px;
+  height: 3px;
+  width: 60px;
   background: linear-gradient(to right, #6366f1, #a855f7);
+  border-radius: 2px;
+}
+
+/* Section blob backgrounds */
+.hero-bg {
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.12) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168,85,247,0.08) 0%, transparent 60%),
+              #f8faff;
+}
+
+.dark-section {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%);
+  color: white;
+}
+
+/* Accent badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 100px;
+  padding: 4px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Input focus ring */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
 }
