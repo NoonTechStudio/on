@@ -226,14 +226,14 @@ export default function Home() {
                 If your sector isn&apos;t listed — it&apos;s still covered.
               </p>
             </Reveal>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {sectors.map((s, i) => (
                 <Reveal key={s.title} delay={Math.min(i * 0.02, 0.25)}>
-                  <div className="bg-glass rounded-xl px-4 py-5 flex items-center gap-3.5 hover-lift h-full">
+                  <div className="bg-glass rounded-xl px-4 py-4 flex items-center gap-3.5 hover-lift h-full">
                     <div className="w-10 h-10 rounded-lg bg-accent text-primary flex items-center justify-center shrink-0">
                       <s.icon size={19} aria-hidden />
                     </div>
-                    <h4 className="font-semibold text-[0.92rem] leading-snug">{s.title}</h4>
+                    <h4 className="font-semibold text-[0.92rem] leading-snug min-w-0 break-words">{s.title}</h4>
                   </div>
                 </Reveal>
               ))}
