@@ -358,10 +358,29 @@ export default function Home() {
             </Reveal>
             <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
               <Reveal className="lg:col-span-2 space-y-5">
+                {/* Phone contacts */}
                 {[
-                  { icon: Phone, title: "Call us", line: "+44 20 1234 5678", href: "tel:+442012345678" },
+                  { name: "Afroz Ashrafi", number: "+44 7859 210060", href: "tel:+447859210060" },
+                  { name: "Aamir A. Ashrafi", number: "+44 7833 444641", href: "tel:+447833444641" },
+                  { name: "Talha A. Ashrafi", number: "+44 7713 169882", href: "tel:+447713169882" },
+                ].map((c) => (
+                  <a key={c.name} href={c.href} className="block">
+                    <div className="bg-glass rounded-2xl p-6 flex items-center gap-4 hover-lift">
+                      <div className="w-11 h-11 rounded-xl bg-accent text-primary flex items-center justify-center shrink-0">
+                        <Phone size={21} aria-hidden />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm text-muted-foreground">{c.name}</p>
+                        <p className="font-semibold">{c.number}</p>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+
+                {/* Other contact details */}
+                {[
                   { icon: Mail, title: "Email us", line: "hello@oceannova.co.uk", href: "mailto:hello@oceannova.co.uk" },
-                  { icon: MessageCircle, title: "WhatsApp", line: "Chat with us instantly", href: "https://wa.me/442012345678" },
+                  { icon: MessageCircle, title: "WhatsApp", line: "Chat with us instantly", href: "https://wa.me/447859210060" },
                   { icon: MapPin, title: "Based in", line: "London, United Kingdom" },
                 ].map((c) => {
                   const inner = (
@@ -369,7 +388,7 @@ export default function Home() {
                       <div className="w-11 h-11 rounded-xl bg-accent text-primary flex items-center justify-center shrink-0">
                         <c.icon size={21} aria-hidden />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm text-muted-foreground">{c.title}</p>
                         <p className="font-semibold">{c.line}</p>
                       </div>
@@ -435,8 +454,18 @@ export default function Home() {
                 <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Contact</h4>
                 <ul className="space-y-3 text-sm text-white/55">
                   <li>
-                    <a href="tel:+442012345678" className="flex items-center gap-2 hover:text-teal-300 transition-colors">
-                      <Phone size={14} aria-hidden /> +44 20 1234 5678
+                    <a href="tel:+447859210060" className="flex items-center gap-2 hover:text-teal-300 transition-colors">
+                      <Phone size={14} aria-hidden /> +44 7859 210060
+                    </a>
+                  </li>
+                  <li>
+                    <a href="tel:+447833444641" className="flex items-center gap-2 hover:text-teal-300 transition-colors">
+                      <Phone size={14} aria-hidden /> +44 7833 444641
+                    </a>
+                  </li>
+                  <li>
+                    <a href="tel:+447713169882" className="flex items-center gap-2 hover:text-teal-300 transition-colors">
+                      <Phone size={14} aria-hidden /> +44 7713 169882
                     </a>
                   </li>
                   <li>
@@ -459,7 +488,7 @@ export default function Home() {
 
       {/* WhatsApp floating button */}
       <a
-        href="https://wa.me/442012345678"
+        href="https://wa.me/447859210060"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
