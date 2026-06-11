@@ -1,50 +1,140 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 html {
   scroll-behavior: smooth;
 }
 
 :root {
-  --font-primary: 'Inter', system-ui, sans-serif;
+  /* ── Oceannova brand palette ──
+     Warm off-white canvas, deep ocean blue primary, teal accent. */
+  --background: oklch(0.982 0.005 85);          /* warm off-white */
+  --foreground: oklch(0.25 0.04 245);           /* deep navy ink */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.04 245);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.04 245);
+  --primary: oklch(0.45 0.095 235);             /* deep ocean blue */
+  --primary-foreground: oklch(0.985 0.005 85);
+  --secondary: oklch(0.945 0.018 215);          /* pale sea mist */
+  --secondary-foreground: oklch(0.38 0.07 235);
+  --muted: oklch(0.955 0.008 85);
+  --muted-foreground: oklch(0.5 0.035 240);
+  --accent: oklch(0.93 0.035 200);              /* soft teal wash */
+  --accent-foreground: oklch(0.4 0.08 220);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.905 0.012 220);
+  --input: oklch(0.905 0.012 220);
+  --ring: oklch(0.62 0.1 210);                  /* teal focus ring */
+  --chart-1: oklch(0.45 0.095 235);
+  --chart-2: oklch(0.65 0.11 195);
+  --chart-3: oklch(0.55 0.1 220);
+  --chart-4: oklch(0.75 0.09 185);
+  --chart-5: oklch(0.35 0.06 245);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.25 0.04 245);
+  --sidebar-primary: oklch(0.45 0.095 235);
+  --sidebar-primary-foreground: oklch(0.985 0.005 85);
+  --sidebar-accent: oklch(0.93 0.035 200);
+  --sidebar-accent-foreground: oklch(0.4 0.08 220);
+  --sidebar-border: oklch(0.905 0.012 220);
+  --sidebar-ring: oklch(0.62 0.1 210);
 }
 
-body {
-  background-color: #f8faff;
-  color: #0f172a;
-  font-family: var(--font-primary);
+@theme inline {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sora), var(--font-manrope), ui-sans-serif, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-.font-primary {
-  font-family: var(--font-primary);
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    line-height: 1.7;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
 }
 
-/* Glassmorphism card */
+/* ── Oceannova decorative utilities ── */
+
+/* Glassmorphism card on the off-white canvas */
 .bg-glass {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.06), 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 24px rgba(14, 94, 138, 0.07), 0 1px 4px rgba(15, 42, 67, 0.05);
 }
 
-/* Hover lift */
 .hover-lift {
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 .hover-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.14);
+  box-shadow: 0 14px 36px rgba(14, 94, 138, 0.15);
 }
 
-/* Gradient text */
+/* Ocean gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  background: linear-gradient(120deg, #0E5E8A 0%, #0FA3A3 85%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Gradient underline for headings */
+/* Gradient underline for section headings */
 .gradient-underline {
   position: relative;
   display: inline-block;
@@ -54,43 +144,37 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -8px;
+  bottom: -10px;
   height: 3px;
-  width: 60px;
-  background: linear-gradient(to right, #6366f1, #a855f7);
+  width: 64px;
+  background: linear-gradient(to right, #0E5E8A, #0FA3A3);
   border-radius: 2px;
 }
 
-/* Section blob backgrounds */
+/* Hero wash — soft ocean light over the off-white canvas */
 .hero-bg {
-  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.12) 0%, transparent 70%),
-              radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168,85,247,0.08) 0%, transparent 60%),
-              #f8faff;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(14, 94, 138, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 40% at 85% 45%, rgba(15, 163, 163, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 35% at 10% 70%, rgba(14, 116, 144, 0.07) 0%, transparent 60%),
+    var(--background);
 }
 
+/* Deep-sea panels */
 .dark-section {
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%);
+  background: linear-gradient(135deg, #0A1F33 0%, #0E3A52 55%, #0A1F33 100%);
   color: white;
 }
 
-/* Accent badge */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(99, 102, 241, 0.1);
-  color: #6366f1;
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 100px;
-  padding: 4px 14px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+/* Gradient CTA button */
+.btn-ocean {
+  background: linear-gradient(120deg, #0E5E8A 0%, #0E7490 60%, #0FA3A3 100%);
+  color: #fff;
+  transition: box-shadow 200ms ease, transform 200ms ease, filter 200ms ease;
+  box-shadow: 0 8px 24px rgba(14, 94, 138, 0.28);
 }
-
-/* Input focus ring */
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+.btn-ocean:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(14, 94, 138, 0.38);
 }

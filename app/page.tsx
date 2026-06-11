@@ -1,404 +1,472 @@
-"use client";
-import React from "react";
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { useForm, SubmitHandler } from "react-hook-form";
 import {
-  Phone, Mail, CheckCircle, Menu, X, ArrowRight,
-  CreditCard, Gavel, ShoppingBag, Construction, HeartPulse, Coffee,
-  MessageCircle, Shield, Cloud, Bot, Store, Wrench, Layers, ChevronRight
+  Phone, Mail, MessageCircle, ArrowRight, CheckCircle2, MapPin,
+  Code2, Globe, Smartphone, ShoppingCart, Bot, Cloud, ShieldCheck,
+  BarChart3, Megaphone, Palette, Headphones, Workflow,
+  CreditCard, Scale, Stethoscope, ShoppingBag, HardHat, Home as HomeIcon,
+  GraduationCap, BedDouble, UtensilsCrossed, Truck, Factory, Users,
+  HeartHandshake, Zap, Car, Plane, Sparkles, Dumbbell, CalendarDays,
+  Wheat, Wrench, Calculator, Landmark, Rocket,
 } from "lucide-react";
+import { Navbar } from "@/components/site/navbar";
+import { Reveal } from "@/components/site/reveal";
+import { ContactForm } from "@/components/site/contact-form";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion, AccordionItem, AccordionTrigger, AccordionContent,
+} from "@/components/ui/accordion";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-primary" });
+/* ── Content ─────────────────────────────────────────────── */
 
-interface FormValues {
-  fullName: string;
-  corporateEmail: string;
-  phone: string;
-  companyName: string;
-  industry: string;
-  budget: string;
-  projectScope: string;
-  optIn: boolean;
-}
-
-function Section({ id, children, className = "", style }: { id: string; children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
-  return (
-    <section id={id} ref={ref} className={className} style={style}>
-      <motion.div
-        initial={{ opacity: 0, y: 36 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.65, ease: "easeOut" }}
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-}
+const stats = [
+  { val: "40+", label: "UK businesses served" },
+  { val: "98%", label: "Client satisfaction" },
+  { val: "24/7", label: "UK-based support" },
+  { val: "100%", label: "GDPR-first delivery" },
+];
 
 const services = [
-  { icon: <Bot size={22} />, title: "AI‑First Automation", desc: "Production‑ready LLM pipelines, RAG frameworks for internal wikis, autonomous Xero/Sage integrations.", large: true },
-  { icon: <Store size={22} />, title: "Headless Commerce", desc: "Stripe Connect, Shopify Hydrogen, bespoke checkout with Royal Mail API." },
-  { icon: <Cloud size={22} />, title: "UK Sovereign Cloud", desc: "Landing Zones, Well‑Architected reviews, FinOps optimisation." },
-  { icon: <Shield size={22} />, title: "Zero‑Trust Resilience", desc: "Pen testing, ISO27001 support, NHS DSPT alignment." },
-  { icon: <Wrench size={22} />, title: "AppSheet & Internal Tools", desc: "Logistics, field management, CRM in under 2 weeks." },
-  { icon: <Mail size={22} />, title: "Google Workspace Elite", desc: "Migrate from O365, Vault, MDM, 24/7 UK support." },
-  { icon: <Layers size={22} />, title: "Bespoke SaaS Engineering", desc: "Full product lifecycle from MVP to Series‑A scale." },
+  { icon: Code2, title: "Custom Software Development", desc: "Bespoke platforms, client portals and internal tools engineered around your exact workflow — built to scale as you grow." },
+  { icon: Globe, title: "Web Design & Development", desc: "Lightning-fast, SEO-ready websites that turn visitors into paying customers." },
+  { icon: Smartphone, title: "Mobile App Development", desc: "Polished iOS and Android apps — booking, loyalty, delivery and beyond." },
+  { icon: ShoppingCart, title: "E-Commerce Solutions", desc: "Shopify, headless storefronts, payments, VAT handling and Royal Mail integration." },
+  { icon: Bot, title: "AI & Intelligent Automation", desc: "Chatbots, document automation and AI workflows that save hours every week." },
+  { icon: Cloud, title: "Cloud & DevOps", desc: "Migrations, UK-hosted infrastructure, CI/CD pipelines and cost optimisation." },
+  { icon: ShieldCheck, title: "Cybersecurity & Compliance", desc: "Security reviews, Cyber Essentials support and GDPR-aligned data practices." },
+  { icon: BarChart3, title: "Data & Analytics", desc: "Live dashboards, reporting and forecasting that turn your data into decisions." },
+  { icon: Megaphone, title: "Digital Marketing & SEO", desc: "Local SEO, Google Ads and content strategies that put you ahead of competitors." },
+  { icon: Palette, title: "Branding & UI/UX Design", desc: "Logos, brand identities and interfaces your customers will love to use." },
+  { icon: Headphones, title: "IT Support & Managed Services", desc: "Friendly UK helpdesk, proactive monitoring, Microsoft 365 and Google Workspace." },
+  { icon: Workflow, title: "CRM, ERP & Business Systems", desc: "HubSpot, Salesforce, Xero and Sage integrations — bookings, rotas and invoicing connected." },
 ];
 
 const sectors = [
-  { icon: <CreditCard size={20} />, title: "Financial Services & Fintech", desc: "FCA handbook compliance, Open Banking APIs, PCI‑DSS Level 1 hosting." },
-  { icon: <Gavel size={20} />, title: "Legal & Professional Services", desc: "SRA data privacy locks, secure client portals, time‑recording automation." },
-  { icon: <ShoppingBag size={20} />, title: "Retail & E‑commerce", desc: "Multi‑channel inventory sync, VAT engine, headless Shopify." },
-  { icon: <Construction size={20} />, title: "Construction & Logistics", desc: "Remote asset tracking, Jira for construction, drone telemetry pipelines." },
-  { icon: <HeartPulse size={20} />, title: "Healthcare & MedTech", desc: "NHS Digital alignment, scheduling engines, DTAC compliance." },
-  { icon: <Coffee size={20} />, title: "Hospitality & Leisure", desc: "Custom POS, dynamic pricing, guest Wi‑Fi analytics." },
+  { icon: CreditCard, title: "Finance & Fintech" },
+  { icon: Scale, title: "Legal Services" },
+  { icon: Stethoscope, title: "Healthcare & Clinics" },
+  { icon: ShoppingBag, title: "Retail & E-commerce" },
+  { icon: HardHat, title: "Construction" },
+  { icon: HomeIcon, title: "Property & Lettings" },
+  { icon: GraduationCap, title: "Education & Training" },
+  { icon: BedDouble, title: "Hotels & Hospitality" },
+  { icon: UtensilsCrossed, title: "Restaurants & Takeaways" },
+  { icon: Truck, title: "Logistics & Transport" },
+  { icon: Factory, title: "Manufacturing" },
+  { icon: Users, title: "Recruitment & HR" },
+  { icon: HeartHandshake, title: "Charities & Non-profits" },
+  { icon: Zap, title: "Energy & Utilities" },
+  { icon: Car, title: "Automotive" },
+  { icon: Plane, title: "Travel & Tourism" },
+  { icon: Sparkles, title: "Beauty & Wellness" },
+  { icon: Dumbbell, title: "Gyms & Fitness" },
+  { icon: CalendarDays, title: "Events & Entertainment" },
+  { icon: Wheat, title: "Agriculture & Farming" },
+  { icon: Wrench, title: "Trades & Home Services" },
+  { icon: Calculator, title: "Accountancy" },
+  { icon: Landmark, title: "Public Sector" },
+  { icon: Rocket, title: "Startups & Scale-ups" },
+];
+
+const whyUs = [
+  { title: "UK-Based Team & Support", desc: "Real people in the UK who understand British business — same time zone, same standards, no language barriers." },
+  { title: "Transparent Fixed Pricing", desc: "Clear proposals with fixed quotes before any work starts. No hidden fees, no surprise invoices." },
+  { title: "GDPR & Security First", desc: "Every project is built with UK data protection law in mind, with your customers' data hosted securely in the UK." },
+  { title: "Launch in Weeks, Not Months", desc: "Agile delivery with weekly demos — most websites launch within 3–6 weeks, apps within 8–12." },
+  { title: "Partners Beyond Launch", desc: "We stay with you after go-live: support plans, updates, security patches and growth advice included." },
+  { title: "Built to Win You Clients", desc: "Everything we ship is designed around one goal — bringing more customers and revenue to your business." },
+];
+
+const process = [
+  { step: "01", title: "Discovery Call", desc: "A free, no-obligation chat about your business, your customers and what success looks like." },
+  { step: "02", title: "Strategy & Proposal", desc: "A clear plan with fixed pricing, timelines and the exact outcomes you'll get." },
+  { step: "03", title: "Design & Build", desc: "Agile sprints with demos every week — you see progress constantly, never a black box." },
+  { step: "04", title: "Launch & Handover", desc: "Thorough testing, smooth go-live and full training so your team is confident from day one." },
+  { step: "05", title: "Grow & Support", desc: "Ongoing support, monitoring and improvements that keep you ahead of the competition." },
 ];
 
 const faqs = [
-  { q: "How do you handle GDPR and UK data sovereignty?", a: "All data stays within UK‑based cloud regions with ISO27001‑aligned controls." },
-  { q: "Can you maintain my existing .NET/PHP app?", a: "Yes – we provide managed support and gradual migration paths." },
-  { q: "What is your SLA for critical incident response?", a: "15 minutes for P1 incidents, 1 hour for P2." },
-  { q: "Do you offer retainer‑based DevOps?", a: "Our Managed Support plans include 24/7 retainer DevOps services." },
+  { q: "How much does a website or app cost?", a: "Every project is quoted individually, but as a guide: brochure websites typically start from £2,000, e-commerce stores from £5,000, and custom software or mobile apps from £10,000. You always receive a fixed written quote before any work begins — no hourly billing surprises." },
+  { q: "How long will my project take?", a: "Most websites launch within 3–6 weeks. E-commerce stores typically take 6–10 weeks, and custom software or mobile apps 8–16 weeks depending on complexity. We agree a timeline up front and demo progress to you every week." },
+  { q: "Do you work with small businesses or only large companies?", a: "Both. We work with sole traders, local trades and startups right through to regulated enterprises. Our packages scale to fit your budget — and we'll tell you honestly if something isn't worth spending money on yet." },
+  { q: "How do you handle GDPR and data protection?", a: "All data is hosted in UK or EU cloud regions, processed in line with UK GDPR, and we'll supply a data processing agreement for your records. Security and privacy reviews are part of every build, not an optional extra." },
+  { q: "Can you take over or improve my existing website or system?", a: "Yes. We regularly inherit existing WordPress, Shopify, .NET and PHP projects — we'll audit what you have for free, fix what's broken and modernise it gradually without disrupting your business." },
+  { q: "What happens after my project launches?", a: "You're never left on your own. Every project includes a 30-day warranty, and our optional support plans cover hosting, security updates, content changes and a UK helpdesk that answers fast." },
 ];
 
+/* ── Page ────────────────────────────────────────────────── */
+
 export default function Home() {
-  const { register, handleSubmit, reset } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => { console.log(data); reset(); };
-  const [menuOpen, setMenuOpen] = React.useState(false);
-
   return (
-    <html className={inter.variable} lang="en">
-      <head>
-        <title>Oceannova – Elite UK Software & AI Agency</title>
-        <meta name="description" content="Premium software engineering, AI agents, and ISO27001 cloud infrastructure for UK enterprises." />
-      </head>
-      <body className="font-primary antialiased">
+    <>
+      <Navbar />
 
-        {/* ── NAV ── */}
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-glass border-b border-white/60 shadow-sm">
-          <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-            <Image src="/logo.svg" alt="Oceannova" height={36} width={160} className="h-9 w-auto" />
+      <main className="flex-1">
+        {/* ── HERO ── */}
+        <div className="hero-bg pt-32 md:pt-40 pb-20 md:pb-28">
+          <Reveal className="max-w-7xl mx-auto px-5 md:px-8 text-center">
+            <Badge variant="secondary" className="mb-8 rounded-full px-4 py-1.5 text-[0.8rem] font-semibold gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" aria-hidden />
+              The digital partner for every UK business
+            </Badge>
+            <h1 className="text-[2.6rem] leading-[1.08] md:text-6xl lg:text-7xl font-bold mb-8 max-w-4xl mx-auto">
+              Websites, Apps & AI That
+              <br />
+              <span className="gradient-text">Win You Clients.</span>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+              Oceannova builds beautiful websites, mobile apps, online stores and
+              AI automation for British businesses of every size — from local
+              trades to national enterprises.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-20">
+              <a
+                href="#contact"
+                className="btn-ocean flex items-center justify-center gap-2 rounded-full px-9 py-4 font-semibold text-base"
+              >
+                Get a Free Consultation <ArrowRight size={17} aria-hidden />
+              </a>
+              <a
+                href="#services"
+                className="flex items-center justify-center gap-2 border-2 border-border hover:border-primary/40 bg-card rounded-full px-9 py-4 font-semibold text-foreground/80 hover:text-primary transition-colors"
+              >
+                Explore Our Services
+              </a>
+            </div>
 
-            <div className="hidden md:flex gap-7 text-sm font-medium text-slate-600">
-              {["Services","Solutions","Sectors","Process","Insights","Contact"].map(s => (
-                <Link key={s} href={`#${s.toLowerCase()}`} className="hover:text-indigo-600 transition-colors">{s}</Link>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+              {stats.map((m) => (
+                <div key={m.label} className="bg-glass rounded-2xl px-5 py-6 hover-lift text-center">
+                  <p className="text-3xl md:text-4xl font-bold font-heading gradient-text">{m.val}</p>
+                  <p className="text-sm text-muted-foreground mt-2">{m.label}</p>
+                </div>
               ))}
             </div>
+          </Reveal>
+        </div>
 
-            <div className="flex items-center gap-3">
-              <a href="tel:+442012345678" className="hidden sm:flex items-center gap-1.5 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
-                <Phone size={14} /><span>+44 20 1234 5678</span>
-              </a>
-              <button
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-5 py-2 text-sm font-semibold transition-colors shadow-sm"
-              >
-                Book Discovery Call
-              </button>
-              <button className="md:hidden p-1 text-slate-600" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-                {menuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
+        {/* ── SERVICES ── */}
+        <section id="services" className="py-24 md:py-32">
+          <div className="max-w-7xl mx-auto px-5 md:px-8">
+            <Reveal className="text-center mb-16">
+              <div>
+                <Badge variant="secondary" className="mb-5 rounded-full px-4 py-1.5 font-semibold">
+                  Everything Under One Roof
+                </Badge>
+              </div>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold gradient-underline">
+                Our Services
+              </h2>
+              <p className="text-muted-foreground text-lg mt-8 max-w-2xl mx-auto leading-relaxed">
+                One trusted partner for every digital need your business will ever
+                have — no juggling multiple agencies.
+              </p>
+            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+              {services.map((s, i) => (
+                <Reveal key={s.title} delay={Math.min(i * 0.05, 0.3)}>
+                  <div className="bg-glass rounded-2xl p-7 md:p-8 hover-lift h-full">
+                    <div className="w-12 h-12 rounded-xl bg-accent text-primary flex items-center justify-center mb-5">
+                      <s.icon size={24} aria-hidden />
+                    </div>
+                    <h3 className="font-bold mb-3 text-lg">{s.title}</h3>
+                    <p className="text-muted-foreground text-[0.94rem] leading-relaxed">{s.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
-        </nav>
+        </section>
 
-        {/* Mobile drawer */}
-        {menuOpen && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" onClick={() => setMenuOpen(false)} />
-        )}
-        <aside className={`fixed top-0 left-0 h-full w-72 bg-white z-50 p-8 shadow-2xl transform transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
-          <Image src="/logo.svg" alt="Oceannova" height={32} width={140} className="mb-8" />
-          <nav className="flex flex-col gap-5 text-base font-medium text-slate-700">
-            {["Services","Solutions","Sectors","Process","Insights","Contact"].map(s => (
-              <Link key={s} href={`#${s.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="flex items-center gap-2 hover:text-indigo-600 transition-colors">
-                <ChevronRight size={14} className="text-indigo-400" />{s}
-              </Link>
-            ))}
-          </nav>
-        </aside>
-
-        <main>
-
-          {/* ── HERO ── */}
-          <div className="hero-bg min-h-screen flex flex-col justify-center pt-20">
-            <Section id="hero" className="max-w-7xl mx-auto px-6 py-24 text-center">
-              <div>
-                <span className="badge mb-6 inline-flex">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                  Trusted by 40+ UK Enterprises
-                </span>
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-slate-900 mb-6 max-w-4xl mx-auto">
-                  Future‑Proof Your<br />
-                  <span className="gradient-text">UK Enterprise.</span>
-                </h1>
-                <p className="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-                  Elite Software, AI Agents & ISO27001 Cloud Infrastructure.<br />
-                  Oceannova builds scalable fintech‑grade platforms for British businesses.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4 mb-20">
-                  <button
-                    onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-8 py-3.5 font-semibold transition-all shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5"
-                  >
-                    Schedule Consultation <ArrowRight size={16} />
-                  </button>
-                  <button
-                    onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
-                    className="flex items-center justify-center gap-2 border-2 border-slate-200 hover:border-indigo-400 bg-white rounded-full px-8 py-3.5 font-semibold text-slate-700 hover:text-indigo-600 transition-all"
-                  >
-                    Our Capabilities
-                  </button>
-                </div>
-
-                {/* Metrics */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[
-                    { val: "£42M+", label: "Client Enterprise Value" },
-                    { val: "1.2B+", label: "API Requests / Month" },
-                    { val: "100%", label: "UK Sovereign Compliance" },
-                    { val: "0%", label: "Migration Downtime" },
-                  ].map(m => (
-                    <div key={m.val} className="bg-glass rounded-2xl p-5 hover-lift text-center">
-                      <p className="text-3xl font-bold text-slate-900">{m.val}</p>
-                      <p className="text-sm text-slate-500 mt-1">{m.label}</p>
+        {/* ── WHY US (dark) ── */}
+        <section id="why-us" className="dark-section py-24 md:py-32">
+          <div className="max-w-7xl mx-auto px-5 md:px-8">
+            <Reveal className="text-center mb-16">
+              <Badge className="mb-5 rounded-full px-4 py-1.5 font-semibold bg-teal-400/15 text-teal-200 border-teal-300/25">
+                Why Oceannova
+              </Badge>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold text-white">
+                The Partner UK Businesses{" "}
+                <span className="text-teal-300">Recommend</span>
+              </h2>
+              <p className="text-white/60 text-lg mt-6 max-w-2xl mx-auto leading-relaxed">
+                We measure our success by one thing only — how many new customers
+                and how much time we win for yours.
+              </p>
+            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+              {whyUs.map((c, i) => (
+                <Reveal key={c.title} delay={Math.min(i * 0.05, 0.25)}>
+                  <div className="rounded-2xl p-7 border border-white/10 bg-white/[0.06] hover-lift h-full">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <CheckCircle2 size={18} className="text-teal-300 shrink-0" aria-hidden />
+                      <h3 className="font-bold text-white text-[1.05rem]">{c.title}</h3>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </Section>
+                    <p className="text-white/60 text-[0.94rem] leading-relaxed">{c.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
+        </section>
 
-          {/* ── SOLUTIONS (dark) ── */}
-          <Section id="solutions" className="dark-section py-24">
-            <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        {/* ── SECTORS ── */}
+        <section id="sectors" className="py-24 md:py-32 bg-gradient-to-b from-secondary/40 to-background">
+          <div className="max-w-7xl mx-auto px-5 md:px-8">
+            <Reveal className="text-center mb-16">
               <div>
-                <span className="badge mb-4 inline-flex" style={{ background: "rgba(99,102,241,0.2)", borderColor: "rgba(99,102,241,0.35)", color: "#a5b4fc" }}>Legacy Modernisation</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-                  Sluggish legacy software is costing you <span className="text-indigo-400">40% market share.</span>
+                <Badge variant="secondary" className="mb-5 rounded-full px-4 py-1.5 font-semibold">
+                  Industry Expertise
+                </Badge>
+              </div>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold gradient-underline">
+                Every Business. Every Sector.
+              </h2>
+              <p className="text-muted-foreground text-lg mt-8 max-w-2xl mx-auto leading-relaxed">
+                Whatever you do, we&apos;ve built for businesses like yours.
+                If your sector isn&apos;t listed — it&apos;s still covered.
+              </p>
+            </Reveal>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {sectors.map((s, i) => (
+                <Reveal key={s.title} delay={Math.min(i * 0.02, 0.25)}>
+                  <div className="bg-glass rounded-xl px-4 py-5 flex items-center gap-3.5 hover-lift h-full">
+                    <div className="w-10 h-10 rounded-lg bg-accent text-primary flex items-center justify-center shrink-0">
+                      <s.icon size={19} aria-hidden />
+                    </div>
+                    <h4 className="font-semibold text-[0.92rem] leading-snug">{s.title}</h4>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── PROCESS ── */}
+        <section id="process" className="py-24 md:py-32">
+          <div className="max-w-7xl mx-auto px-5 md:px-8">
+            <Reveal className="text-center mb-16">
+              <div>
+                <Badge variant="secondary" className="mb-5 rounded-full px-4 py-1.5 font-semibold">
+                  How We Work
+                </Badge>
+              </div>
+              <h2 className="text-3xl md:text-[2.75rem] font-bold gradient-underline">
+                From Idea to Launch
+              </h2>
+              <p className="text-muted-foreground text-lg mt-8 max-w-2xl mx-auto leading-relaxed">
+                A simple, transparent journey — you&apos;ll always know exactly
+                where your project stands.
+              </p>
+            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+              {process.map((s, i) => (
+                <Reveal key={s.title} delay={Math.min(i * 0.06, 0.3)}>
+                  <div className="bg-glass rounded-2xl p-6 hover-lift relative overflow-hidden h-full">
+                    <span className="absolute -top-2 right-3 text-6xl font-black font-heading text-primary/[0.07] select-none" aria-hidden>
+                      {s.step}
+                    </span>
+                    <p className="text-xs font-bold text-primary uppercase tracking-widest mb-3">
+                      Step {s.step}
+                    </p>
+                    <h4 className="font-bold mb-2">{s.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── CTA BANNER ── */}
+        <section className="px-5 md:px-8 pb-24 md:pb-32">
+          <Reveal className="max-w-7xl mx-auto">
+            <div className="dark-section rounded-3xl px-8 py-16 md:px-16 md:py-20 text-center relative overflow-hidden">
+              <div
+                className="absolute inset-0 opacity-30"
+                style={{ background: "radial-gradient(ellipse 60% 80% at 70% 20%, rgba(15,163,163,0.4) 0%, transparent 60%)" }}
+                aria-hidden
+              />
+              <div className="relative">
+                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                  Ready to Grow Your Business?
                 </h2>
-                <p className="text-slate-400 text-lg leading-relaxed">Modernise .NET, PHP, or Angular stacks with next‑generation architecture — without disruption.</p>
-              </div>
-              <div className="grid gap-4">
-                {[
-                  { title: "Bespoke Codebase Modernisation", desc: "Migrate monolithic apps to Next.js + micro‑frontends. Radical SEO gains and developer velocity." },
-                  { title: "Proactive Managed Support", desc: "SOC2‑aligned monitoring, dependency vulnerability patching, and zero‑downtime deployment pipelines." },
-                ].map(c => (
-                  <div key={c.title} className="rounded-2xl p-6 border border-white/10 bg-white/5 hover-lift">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle size={16} className="text-indigo-400 shrink-0" />
-                      <h3 className="font-semibold text-white">{c.title}</h3>
-                    </div>
-                    <p className="text-slate-400 text-sm leading-relaxed pl-6">{c.desc}</p>
-                  </div>
-                ))}
+                <p className="text-white/65 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+                  Book a free 30-minute consultation. No jargon, no pressure —
+                  just honest advice on what would move the needle for you.
+                </p>
+                <a
+                  href="#contact"
+                  className="btn-ocean inline-flex items-center gap-2 rounded-full px-10 py-4 font-semibold text-base"
+                >
+                  Book Your Free Call <ArrowRight size={17} aria-hidden />
+                </a>
               </div>
             </div>
-          </Section>
+          </Reveal>
+        </section>
 
-          {/* ── SERVICES ── */}
-          <Section id="services" className="py-24 max-w-7xl mx-auto px-6">
-            <div>
-              <div className="text-center mb-14">
-                <span className="badge mb-4">7-Pillar Framework</span>
-                <h2 className="text-4xl font-bold text-slate-900 gradient-underline inline-block">Our Services</h2>
+        {/* ── FAQ ── */}
+        <section id="faq" className="py-24 md:py-32 bg-gradient-to-b from-secondary/40 to-background">
+          <div className="max-w-3xl mx-auto px-5 md:px-8">
+            <Reveal className="text-center mb-14">
+              <div>
+                <Badge variant="secondary" className="mb-5 rounded-full px-4 py-1.5 font-semibold">
+                  Good to Know
+                </Badge>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {services.map((s, i) => (
-                  <div
-                    key={s.title}
-                    className={`bg-glass rounded-2xl p-7 hover-lift ${i === 0 ? "md:col-span-2 md:row-span-2" : ""}`}
+              <h2 className="text-3xl md:text-[2.75rem] font-bold gradient-underline">
+                Frequently Asked Questions
+              </h2>
+            </Reveal>
+            <Reveal>
+              <Accordion type="single" collapsible defaultValue="faq-0" className="space-y-3">
+                {faqs.map((item, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`faq-${i}`}
+                    className="bg-glass rounded-xl px-5 border-none"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
-                      {s.icon}
-                    </div>
-                    <h3 className={`font-bold text-slate-900 mb-2 ${i === 0 ? "text-xl" : ""}`}>{s.title}</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
-                  </div>
+                    <AccordionTrigger className="font-semibold text-left text-[0.98rem] py-5 hover:no-underline">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground text-[0.94rem] leading-relaxed pb-5">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </div>
-            </div>
-          </Section>
+              </Accordion>
+            </Reveal>
+          </div>
+        </section>
 
-          {/* ── SECTORS ── */}
-          <Section id="sectors" className="py-24" style={{ background: "linear-gradient(180deg, #f0f4ff 0%, #f8faff 100%)" }}>
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center mb-14">
-                <span className="badge mb-4">Industry Expertise</span>
-                <h2 className="text-4xl font-bold text-slate-900 gradient-underline inline-block">Sectors We Empower</h2>
+        {/* ── CONTACT ── */}
+        <section id="contact" className="py-24 md:py-32">
+          <div className="max-w-7xl mx-auto px-5 md:px-8">
+            <Reveal className="text-center mb-16">
+              <div>
+                <Badge variant="secondary" className="mb-5 rounded-full px-4 py-1.5 font-semibold">
+                  Get in Touch
+                </Badge>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                {sectors.map(s => (
-                  <div key={s.title} className="bg-glass rounded-2xl p-6 flex items-start gap-4 hover-lift">
-                    <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                      {s.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1 text-sm">{s.title}</h4>
-                      <p className="text-xs text-slate-500 leading-relaxed">{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Section>
-
-          {/* ── PROCESS ── */}
-          <Section id="process" className="py-24 max-w-7xl mx-auto px-6">
-            <div>
-              <div className="text-center mb-14">
-                <span className="badge mb-4">How We Work</span>
-                <h2 className="text-4xl font-bold text-slate-900 gradient-underline inline-block">6‑Week Accelerator</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+              <h2 className="text-3xl md:text-[2.75rem] font-bold gradient-underline">
+                Start Your Project Today
+              </h2>
+              <p className="text-muted-foreground text-lg mt-8 max-w-2xl mx-auto leading-relaxed">
+                Tell us what you need — we reply to every enquiry within one
+                working day.
+              </p>
+            </Reveal>
+            <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+              <Reveal className="lg:col-span-2 space-y-5">
                 {[
-                  { week: "Week 1", title: "Discovery & Audit", desc: "Codebase & cloud‑cost assessment." },
-                  { week: "Week 2", title: "Architecture Blueprint", desc: "HLD, security controls, tech‑stack sign‑off." },
-                  { week: "Weeks 3–5", title: "Agile Sprint", desc: "Bi‑weekly stakeholder demos." },
-                  { week: "Week 6", title: "Hardening & Launch", desc: "Pen test, load test, go‑live + 30‑day warranty." },
-                ].map((s, i) => (
-                  <div key={s.title} className="bg-glass rounded-2xl p-6 hover-lift relative overflow-hidden">
-                    <span className="absolute top-4 right-4 text-5xl font-black text-indigo-50 select-none">{i + 1}</span>
-                    <p className="text-xs font-semibold text-indigo-500 uppercase tracking-wider mb-2">{s.week}</p>
-                    <h4 className="font-bold text-slate-900 mb-1">{s.title}</h4>
-                    <p className="text-sm text-slate-500">{s.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Section>
-
-          {/* ── INSIGHTS ── */}
-          <Section id="insights" className="py-24" style={{ background: "linear-gradient(180deg, #f8faff 0%, #f0f4ff 100%)" }}>
-            <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-6">
-              <div className="bg-glass rounded-2xl p-8 hover-lift">
-                <span className="badge mb-4">Latest</span>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">The UK Tech Brief</h3>
-                <p className="text-slate-500 text-sm mb-4">New: AI Procurement Framework for Public Sector — navigating the emerging compliance requirements for enterprise AI adoption.</p>
-                <button className="text-indigo-600 text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
-                  Read more <ArrowRight size={14} />
-                </button>
-              </div>
-              <div className="bg-glass rounded-2xl p-8 hover-lift">
-                <span className="badge mb-4">Certifications</span>
-                <h3 className="text-xl font-bold text-slate-900 mb-4">Compliance & Trust</h3>
-                <div className="flex flex-wrap gap-2">
-                  {["ISO27001", "Cyber Essentials Plus", "SOC2 Type II", "Google Cloud Partner", "PCI-DSS"].map(c => (
-                    <span key={c} className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-3 py-1 rounded-full text-xs font-medium">{c}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Section>
-
-          {/* ── CONTACT ── */}
-          <Section id="contact" className="py-24 max-w-7xl mx-auto px-6">
-            <div>
-              <div className="text-center mb-14">
-                <span className="badge mb-4">Get In Touch</span>
-                <h2 className="text-4xl font-bold text-slate-900 gradient-underline inline-block">Start Your Project</h2>
-              </div>
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* FAQ */}
-                <div className="space-y-3">
-                  <h3 className="text-xl font-bold text-slate-900 mb-5">Frequently Asked Questions</h3>
-                  {faqs.map((item, i) => (
-                    <details key={i} className="bg-glass rounded-xl overflow-hidden hover-lift" open={i === 0}>
-                      <summary className="font-semibold text-slate-800 cursor-pointer px-5 py-4 flex items-center justify-between list-none [&::-webkit-details-marker]:hidden">
-                        {item.q}
-                        <ChevronRight size={16} className="text-indigo-400 shrink-0 details-chevron" />
-                      </summary>
-                      <p className="px-5 pb-4 text-sm text-slate-500 leading-relaxed">{item.a}</p>
-                    </details>
-                  ))}
-                </div>
-
-                {/* Form */}
-                <div className="bg-glass rounded-2xl p-8 hover-lift">
-                  <h3 className="text-xl font-bold text-slate-900 mb-6">Enquire Today</h3>
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <input {...register("fullName", { required: true })} placeholder="Full Name" className="border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm w-full bg-white/70" />
-                      <input {...register("corporateEmail", { required: true })} type="email" placeholder="Corporate Email" className="border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm w-full bg-white/70" />
+                  { icon: Phone, title: "Call us", line: "+44 20 1234 5678", href: "tel:+442012345678" },
+                  { icon: Mail, title: "Email us", line: "hello@oceannova.co.uk", href: "mailto:hello@oceannova.co.uk" },
+                  { icon: MessageCircle, title: "WhatsApp", line: "Chat with us instantly", href: "https://wa.me/442012345678" },
+                  { icon: MapPin, title: "Based in", line: "London, United Kingdom" },
+                ].map((c) => {
+                  const inner = (
+                    <div className="bg-glass rounded-2xl p-6 flex items-center gap-4 hover-lift">
+                      <div className="w-11 h-11 rounded-xl bg-accent text-primary flex items-center justify-center shrink-0">
+                        <c.icon size={21} aria-hidden />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">{c.title}</p>
+                        <p className="font-semibold">{c.line}</p>
+                      </div>
                     </div>
-                    <input {...register("phone")} placeholder="Phone" className="border border-slate-200 rounded-lg w-full px-3.5 py-2.5 text-sm bg-white/70" />
-                    <input {...register("companyName")} placeholder="Company Name" className="border border-slate-200 rounded-lg w-full px-3.5 py-2.5 text-sm bg-white/70" />
-                    <select {...register("industry")} className="border border-slate-200 rounded-lg w-full px-3.5 py-2.5 text-sm bg-white/70 text-slate-600">
-                      <option value="">Select Industry</option>
-                      <option>Finance</option><option>Legal</option><option>Retail</option>
-                      <option>Healthcare</option><option>Logistics</option>
-                    </select>
-                    <select {...register("budget")} className="border border-slate-200 rounded-lg w-full px-3.5 py-2.5 text-sm bg-white/70 text-slate-600">
-                      <option value="">Select Budget Range</option>
-                      <option>£10k–£25k</option><option>£25k–£50k</option><option>£50k+</option>
-                    </select>
-                    <textarea {...register("projectScope")} placeholder="Project Scope" rows={3} className="border border-slate-200 rounded-lg w-full px-3.5 py-2.5 text-sm bg-white/70 resize-none" />
-                    <label className="flex items-start gap-2.5 cursor-pointer">
-                      <input type="checkbox" {...register("optIn")} className="mt-0.5 accent-indigo-600" />
-                      <span className="text-xs text-slate-500">Opt‑in to receive the Oceannova UK Tech Strategy Whitepaper</span>
-                    </label>
-                    <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-full py-3 font-semibold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-indigo-100">
-                      Submit Enquiry <ArrowRight size={16} />
-                    </button>
-                  </form>
+                  );
+                  return c.href ? (
+                    <a key={c.title} href={c.href} className="block" target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
+                      {inner}
+                    </a>
+                  ) : (
+                    <div key={c.title}>{inner}</div>
+                  );
+                })}
+              </Reveal>
+              <Reveal className="lg:col-span-3" delay={0.1}>
+                <div className="bg-glass rounded-2xl p-7 md:p-10">
+                  <h3 className="text-xl font-bold mb-7">Request a Free Quote</h3>
+                  <ContactForm />
                 </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ── FOOTER ── */}
+        <footer className="dark-section py-16">
+          <div className="max-w-7xl mx-auto px-5 md:px-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+              <div>
+                <Image
+                  src="/logo.png"
+                  alt="Oceannova"
+                  height={48}
+                  width={169}
+                  className="brightness-0 invert h-12 w-auto mb-5"
+                />
+                <p className="text-sm text-white/55 leading-relaxed">
+                  The digital partner for every UK business — websites, apps,
+                  AI and support, all under one roof.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Services</h4>
+                <ul className="space-y-3 text-sm text-white/55">
+                  {["Web Design & Development", "Mobile Apps", "E-Commerce", "AI & Automation", "IT Support", "Digital Marketing"].map((s) => (
+                    <li key={s}>
+                      <a href="#services" className="hover:text-teal-300 transition-colors">{s}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Company</h4>
+                <ul className="space-y-3 text-sm text-white/55">
+                  <li><a href="#why-us" className="hover:text-teal-300 transition-colors">Why Oceannova</a></li>
+                  <li><a href="#sectors" className="hover:text-teal-300 transition-colors">Sectors We Serve</a></li>
+                  <li><a href="#process" className="hover:text-teal-300 transition-colors">How We Work</a></li>
+                  <li><a href="#faq" className="hover:text-teal-300 transition-colors">FAQ</a></li>
+                  <li><a href="#contact" className="hover:text-teal-300 transition-colors">Contact</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Contact</h4>
+                <ul className="space-y-3 text-sm text-white/55">
+                  <li>
+                    <a href="tel:+442012345678" className="flex items-center gap-2 hover:text-teal-300 transition-colors">
+                      <Phone size={14} aria-hidden /> +44 20 1234 5678
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto:hello@oceannova.co.uk" className="flex items-center gap-2 hover:text-teal-300 transition-colors">
+                      <Mail size={14} aria-hidden /> hello@oceannova.co.uk
+                    </a>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <MapPin size={14} aria-hidden /> London, United Kingdom
+                  </li>
+                </ul>
               </div>
             </div>
-          </Section>
+            <p className="pt-8 text-center text-xs text-white/40">
+              © {new Date().getFullYear()} Oceannova Ltd. Registered in England &amp; Wales. All rights reserved.
+            </p>
+          </div>
+        </footer>
+      </main>
 
-          {/* ── FOOTER ── */}
-          <footer className="dark-section py-14">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/10">
-                <div>
-                  <Image src="/logo.svg" alt="Oceannova" height={32} width={148} className="brightness-0 invert mb-3" />
-                  <p className="text-sm text-slate-400 leading-relaxed">Registered in England & Wales.<br />Company No. 12345678.<br />VAT: GB123456789.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-3 text-sm">Services</h4>
-                  <ul className="space-y-2 text-sm text-slate-400">
-                    {["AI‑First Automation","Headless Commerce","UK Sovereign Cloud","Zero‑Trust Resilience"].map(s => <li key={s}>{s}</li>)}
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-3 text-sm">Sectors</h4>
-                  <ul className="space-y-2 text-sm text-slate-400">
-                    {["Financial Services","Legal","Retail","Healthcare"].map(s => <li key={s}>{s}</li>)}
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-3 text-sm">Contact</h4>
-                  <p className="text-sm text-slate-400 flex items-center gap-1.5 mb-1"><Phone size={13} /> +44 20 1234 5678</p>
-                  <p className="text-sm text-slate-400 flex items-center gap-1.5"><Mail size={13} /> hello@oceannova.co.uk</p>
-                  <h4 className="font-semibold text-white mt-5 mb-3 text-sm">Legal</h4>
-                  <ul className="space-y-2 text-sm text-slate-400">
-                    <li>Modern Slavery Act</li>
-                    <li>Carbon Reduction Plan</li>
-                  </ul>
-                </div>
-              </div>
-              <p className="pt-6 text-center text-xs text-slate-500">© 2025 Oceannova Ltd. All rights reserved.</p>
-            </div>
-          </footer>
-
-        </main>
-
-        {/* WhatsApp FAB */}
-        <a
-          href="https://wa.me/442012345678"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Chat on WhatsApp"
-          className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-xl hover:-translate-y-1 transition-all z-50"
-        >
-          <MessageCircle size={22} />
-        </a>
-
-      </body>
-    </html>
+      {/* WhatsApp floating button */}
+      <a
+        href="https://wa.me/442012345678"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-xl hover:-translate-y-1 transition-all z-50"
+      >
+        <MessageCircle size={22} aria-hidden />
+      </a>
+    </>
   );
 }
