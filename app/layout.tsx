@@ -26,6 +26,10 @@ export const metadata: Metadata = {
     "IT support UK",
     "digital agency London",
   ],
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "Oceannova — Software, AI & Digital Solutions for UK Businesses",
     description:
