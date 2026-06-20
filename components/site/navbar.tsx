@@ -42,11 +42,11 @@ export function Navbar() {
 
           <div className="flex items-center gap-3">
             <a
-              href="tel:+442012345678"
+              href="tel:+447859210060"
               className="hidden xl:flex items-center gap-1.5 text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
             >
               <Phone size={14} aria-hidden />
-              <span>+44 20 1234 5678</span>
+              <span>+44 7859 210060</span>
             </a>
             <a
               href="#contact"

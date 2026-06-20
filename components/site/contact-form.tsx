@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -45,44 +45,38 @@ export function ContactForm() {
     reset,
     formState: { errors },
   } = useForm<FormValues>();
-  const [submitted, setSubmitted] = React.useState(false);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const subject = encodeURIComponent(
-      `New enquiry from ${data.fullName}${data.companyName ? ` — ${data.companyName}` : ""}`
-    );
-    const body = encodeURIComponent(
-      [
-        `Name: ${data.fullName}`,
-        `Email: ${data.email}`,
-        `Phone: ${data.phone || "—"}`,
-        `Company: ${data.companyName || "—"}`,
-        `Industry: ${data.industry || "—"}`,
-        `Budget: ${data.budget || "—"}`,
-        "",
-        data.projectScope,
-      ].join("\n")
-    );
-    window.location.assign(
-      `mailto:hello@oceannova.co.uk?subject=${subject}&body=${body}`
-    );
-    setSubmitted(true);
-    reset();
+  const [status, setStatus] = React.useState<"idle" | "sending" | "success" | "error">("idle");
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Server error");
+      setStatus("success");
+      reset();
+    } catch {
+      setStatus("error");
+    }
   };
 
-  if (submitted) {
+  if (status === "success") {
     return (
       <div className="flex flex-col items-center justify-center text-center py-16 px-6">
         <div className="w-14 h-14 rounded-full bg-accent text-primary flex items-center justify-center mb-5">
           <CheckCircle size={28} aria-hidden />
         </div>
-        <h3 className="text-xl font-bold mb-2">Thank you!</h3>
+        <h3 className="text-xl font-bold mb-2">Enquiry sent!</h3>
         <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
-          Your enquiry is ready to send in your email app. We respond to every
-          enquiry within one working day.
+          Thank you — we have received your message and will reply within one
+          working day.
         </p>
         <button
-          onClick={() => setSubmitted(false)}
+          onClick={() => setStatus("idle")}
           className="mt-6 text-primary text-sm font-semibold hover:underline"
         >
           Send another enquiry
@@ -171,14 +165,33 @@ export function ContactForm() {
         )}
       </div>
 
+      {status === "error" && (
+        <p className="text-destructive text-sm text-center">
+          Something went wrong — please try again or email us directly at{" "}
+          <a href="mailto:hello@oceannova.co.uk" className="underline">
+            hello@oceannova.co.uk
+          </a>
+        </p>
+      )}
+
       <button
         type="submit"
+        disabled={status === "sending"}
         className={cn(
           "btn-ocean w-full rounded-full py-3.5 font-semibold text-base",
-          "flex items-center justify-center gap-2"
+          "flex items-center justify-center gap-2",
+          status === "sending" && "opacity-70 cursor-not-allowed"
         )}
       >
-        Send Enquiry <ArrowRight size={17} aria-hidden />
+        {status === "sending" ? (
+          <>
+            <Loader2 size={17} className="animate-spin" aria-hidden /> Sending…
+          </>
+        ) : (
+          <>
+            Send Enquiry <ArrowRight size={17} aria-hidden />
+          </>
+        )}
       </button>
       <p className="text-xs text-muted-foreground text-center leading-relaxed">
         We&apos;ll only use your details to respond to your enquiry. No spam, ever.

@@ -360,9 +360,9 @@ export default function Home() {
               <Reveal className="lg:col-span-2 space-y-5">
                 {/* Phone contacts */}
                 {[
-                  { name: "Afroz Ashrafi", number: "+44 7859 210060", href: "tel:+447859210060" },
-                  { name: "Aamir A. Ashrafi", number: "+44 7833 444641", href: "tel:+447833444641" },
-                  { name: "Talha A. Ashrafi", number: "+44 7713 169882", href: "tel:+447713169882" },
+                  { name: "Oceannova Enquiry", number: "+44 7859 210060", href: "tel:+447859210060" },
+                  { name: "Oceannova Support", number: "+44 7833 444641", href: "tel:+447833444641" },
+                  { name: "Oceannova Sales", number: "+44 7713 169882", href: "tel:+447713169882" },
                 ].map((c) => (
                   <a key={c.name} href={c.href} className="block">
                     <div className="bg-glass rounded-2xl p-6 flex items-center gap-4 hover-lift">
